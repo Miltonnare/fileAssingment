@@ -1,26 +1,52 @@
-def modify_content(content):
-    # You can tweak this logic — here we just uppercase it
-    return content.upper()
+def read_file(file_name):
+    """Reads content from a file and returns it."""
+    with open(file_name, "r") as file:
+        content = file.read()
+    return content
 
-try:
-    filename = input("Enter the filename to read from: ").strip()
+def write_file(file_name, content):
+    """Writes content to a file."""
+    with open(file_name, "w") as file:
+        file.write(content)
 
-    with open(filename, "r") as file:
-        original_content = file.read()
+def modification(text):
+    """Converts text to uppercase."""
+    return text.upper()
 
-    modified_content = modify_content(original_content)
+def main():
+    try:
+        inputter = input("Which File are you Looking For: ").strip()
 
-    new_filename = "modified_" + filename
+        if inputter == "movie.txt":
+            rent = read_file(inputter)
 
-    with open(new_filename, "w") as new_file:
-        new_file.write(modified_content)
+            if not rent.strip():
+                print("⚠️ movie.txt is empty!")
+            else:
+                print("\nOriginal content:")
+                print(rent)
 
-    print(f"✅ File '{filename}' was read successfully.")
-    print(f"✍️ Modified content has been written to '{new_filename}'.")
+                modified_content = modification(rent)
+                modified_file_name = "modified_" + inputter
 
-except FileNotFoundError:
-    print(f"🚫 Error: The file '{filename}' was not found.")
-except PermissionError:
-    print(f"🚫 Error: Permission denied for file '{filename}'.")
-except Exception as e:
-    print(f"⚠️ An unexpected error occurred: {e}")
+                write_file(modified_file_name, modified_content)
+                print(f"\n✅ Modified content saved to '{modified_file_name}'.")
+
+        elif inputter == "tumb.txt":
+            default_content = "This is a new File\nUnknown Dimension\nUnclaimed error\n"
+            write_file("tumb.txt", default_content)
+            print("✅ tumb.txt has been created successfully!")
+
+        else:
+            print("❌ Unknown File!")
+
+    except FileNotFoundError:
+        print("❌ FileNotFoundError: The file is not available!")
+    except PermissionError:
+        print("❌ PermissionError: Access to the file denied!")
+    except Exception as e:
+        print(f"❌ Unexpected Error: {e}")
+
+# Run the program
+if __name__ == "__main__":
+    main()
